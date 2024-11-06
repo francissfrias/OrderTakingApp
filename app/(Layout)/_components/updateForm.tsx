@@ -20,7 +20,6 @@ import {
   customerDefaultValues,
   UpdateCustomerSchema,
   updateCustomer,
-  CreateCustomerSchema,
 } from '@/schema/customer';
 import { useToast } from '@/hooks/use-toast';
 import {
@@ -34,7 +33,8 @@ import { useGetCustomerById } from '@/hooks/useGetCustomerId';
 
 const UpdateCustomerForm = ({ id }: { id: string }) => {
   const customer = useGetCustomerById({ id });
-  const customerData: UpdateCustomerSchema = customer?.data!;
+  const customerData: UpdateCustomerSchema = customer.data!;
+
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -45,14 +45,6 @@ const UpdateCustomerForm = ({ id }: { id: string }) => {
   });
   const { toast } = useToast();
 
-  const { errors } = form.formState;
-
-  useEffect(() => {
-    if (Object.keys(errors).length > 0) {
-      console.log('Validation Errors:', errors);
-    }
-  }, [errors]);
-
   useEffect(() => {
     if (!customer.data) return;
 
@@ -60,7 +52,7 @@ const UpdateCustomerForm = ({ id }: { id: string }) => {
       const _key = key as keyof UpdateCustomerSchema;
       form.setValue(_key, customerData[_key]);
     });
-  }, [customerData]);
+  }, [customerData, form, customer.data]);
 
   const onSubmit: SubmitHandler<UpdateCustomerSchema> = async (data: any) => {
     setLoading(true);

@@ -1,8 +1,5 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-// import SkeletonTable from '@/app/admin/_components/SkeletonTable'
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import TablePagination from '@/components/common/tablePagination';
 import CustomersTable from './_components/table';
 import customerColumn from '@/app/(Layout)/_components/columns';

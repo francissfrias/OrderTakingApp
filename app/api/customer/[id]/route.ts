@@ -1,11 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { revalidatePath } from 'next/cache';
 import { Customer } from '@/lib/model/Customer';
-import {
-  createCustomer,
-  CreateCustomerSchema,
-  UpdateCustomerSchema,
-} from '@/schema/customer';
 import { ZodError } from 'zod';
 import { ObjectId } from 'mongodb';
 
