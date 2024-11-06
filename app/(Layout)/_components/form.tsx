@@ -61,7 +61,8 @@ const CreateCustomerForm = () => {
       console.log(e);
       toast({
         title: 'Something went wrong...',
-        description: e.error || 'An unknown error occurred',
+        description:
+          (e as { error: string }).error || 'An unknown error occurred',
         variant: 'destructive',
       });
     } finally {

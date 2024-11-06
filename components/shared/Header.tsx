@@ -9,7 +9,6 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { MenuIcon } from 'lucide-react';
-import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { getPathnameBreadcrumbs } from '@/lib/helper';
 import {
@@ -79,9 +78,7 @@ export default function Header({
               <>
                 <BreadcrumbItem className='font-normal'>
                   <BreadcrumbLink asChild>
-                    <Link href={`/admin/${pathname?.path}`}>
-                      {pathname?.title}
-                    </Link>
+                    <Link href={`/`}>{pathname?.title}</Link>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator />
