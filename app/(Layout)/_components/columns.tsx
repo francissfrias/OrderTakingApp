@@ -30,11 +30,9 @@ const columns: ColumnDef<Customer>[] = [
       );
     },
     cell: (cell) => (
-      <Link href={`/customer/${cell.row.original._id}`}>
-        <p>
-          {cell.row.original.lastName}, {cell.row.original.firstName}
-        </p>
-      </Link>
+      <p>
+        {cell.row.original.lastName}, {cell.row.original.firstName}
+      </p>
     ),
   },
 
