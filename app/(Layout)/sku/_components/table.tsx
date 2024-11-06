@@ -1,19 +1,19 @@
 import { TableComponent } from '@/components/common/tableComponent';
 import { ColumnDef } from '@tanstack/react-table';
-import { Customer as CustomerColumn } from './columns';
-import { Customer } from '@/lib/model/Customer';
+import { Sku as SkuColumn } from './columns';
 import { mappedDataTable } from '@/lib/helper';
+import { Sku } from '@/lib/model/Sku';
 
-const CustomersTable = async ({
+const SkuTable = async ({
   columns,
   offset,
   pageSize,
 }: {
-  columns: ColumnDef<CustomerColumn>[];
+  columns: ColumnDef<SkuColumn>[];
   offset: number;
   pageSize: number;
 }) => {
-  const customer = await Customer.find({
+  const sku = await Sku.find({
     isActive: true,
   })
     .collation({ locale: 'en' })
@@ -22,9 +22,9 @@ const CustomersTable = async ({
     .lean()
     .exec();
 
-  const customerData = mappedDataTable(customer);
+  const skuData = mappedDataTable(sku);
 
-  if (customerData?.length === 0 || !customerData?.length) {
+  if (skuData?.length === 0 || !skuData?.length) {
     return (
       <h1
         style={{
@@ -33,12 +33,12 @@ const CustomersTable = async ({
           alignItems: 'center',
         }}
       >
-        No data found for customers
+        No data found for sku
       </h1>
     );
   }
 
-  return <TableComponent data={customerData} columns={columns} />;
+  return <TableComponent data={skuData} columns={columns} />;
 };
 
-export default CustomersTable;
+export default SkuTable;

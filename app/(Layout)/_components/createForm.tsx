@@ -81,7 +81,7 @@ const CreateCustomerForm = () => {
   return (
     <Dialog open={open}>
       <DialogTrigger asChild>
-        <Button variant='ghost' onClick={() => setOpen(true)}>
+        <Button variant='outline' onClick={() => setOpen(true)}>
           Create Customer
         </Button>
       </DialogTrigger>

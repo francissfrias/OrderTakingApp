@@ -18,8 +18,6 @@ const GET = async (
         { status: 404 }
       );
 
-    console.log(results);
-
     return NextResponse.json(results);
   } catch (e) {
     console.log(e);
@@ -41,7 +39,12 @@ const PATCH = async (
 
     const results = await Customer.findOne(
       { _id: new ObjectId(id) },
-      { _id: 0 }
+      {
+        _id: 0,
+        firstName: 1,
+        lastName: 1,
+        mobileNumber: 1,
+      }
     ).exec();
 
     if (!results)
@@ -53,15 +56,15 @@ const PATCH = async (
     const body = await req.json();
 
     const existingMobileNumberCustomer = await Customer.findOne({
-      mobileNumber: body.mobileNumber,
+      mobileNumber: results.mobileNumber,
       _id: { $ne: new ObjectId(id) },
     });
 
     console.log(existingMobileNumberCustomer);
 
     const existingNameCustomer = await Customer.findOne({
-      firstName: body.firstName,
-      lastName: body.lastName,
+      firstName: results.firstName,
+      lastName: results.lastName,
       _id: { $ne: new ObjectId(id) },
     });
 

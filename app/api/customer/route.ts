@@ -23,10 +23,6 @@ const POST = async (req: NextRequest) => {
       lastName: body.lastName,
     });
 
-    console.log(existingMobileNumberCustomer);
-
-    console.log(existingNameCustomer);
-
     if (existingMobileNumberCustomer) {
       return NextResponse.json(
         {
