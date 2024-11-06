@@ -24,9 +24,15 @@ export const createCustomer = z
 
 export type CreateCustomerSchema = z.infer<typeof createCustomer>;
 
-export const PartialCustomerSchemaZod = createCustomer.partial();
+export const updateCustomer = createCustomer.partial().omit({
+  dateCreated: true,
+  createdBy: true,
+  timestamp: true,
+  isActive: true,
+  userId: true,
+});
 
-export type UpdateCustomerSchema = z.infer<typeof PartialCustomerSchemaZod>;
+export type UpdateCustomerSchema = z.infer<typeof updateCustomer>;
 
 export const customerDefaultValues: CreateCustomerSchema = {
   firstName: '',

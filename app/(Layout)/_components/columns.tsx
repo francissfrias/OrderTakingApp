@@ -4,6 +4,7 @@ import { ArrowUpDown, Pencil } from 'lucide-react';
 import Link from 'next/link';
 import { ColumnDef } from '@tanstack/react-table';
 import { Button } from '@/components/ui/button';
+import UpdateCustomerForm from './updateForm';
 
 export type Customer = {
   _id: string;
@@ -92,9 +93,7 @@ const columns: ColumnDef<Customer>[] = [
     cell: (cell) => {
       return (
         <div className='flex flex-row gap-2'>
-          <Link href={`/customer/${cell.row.original._id}`}>
-            <Pencil className='h-4 w-4' />
-          </Link>
+          <UpdateCustomerForm id={cell.row.original._id} />
         </div>
       );
     },
