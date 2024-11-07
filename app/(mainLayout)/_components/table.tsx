@@ -1,18 +1,20 @@
 import { TableComponent } from '@/components/common/tableComponent';
+import { mappedDataTable } from '@/lib/helper';
+import { Customer } from '@/lib/model/Customer';
 import { ColumnDef } from '@tanstack/react-table';
 import { Customer as CustomerColumn } from './columns';
-import { Customer } from '@/lib/model/Customer';
-import { mappedDataTable } from '@/lib/helper';
+
+interface ICustomerTable {
+  columns: ColumnDef<CustomerColumn>[];
+  offset: number;
+  pageSize: number;
+}
 
 const CustomersTable = async ({
   columns,
   offset,
   pageSize,
-}: {
-  columns: ColumnDef<CustomerColumn>[];
-  offset: number;
-  pageSize: number;
-}) => {
+}: ICustomerTable) => {
   const customer = await Customer.find({})
     .collation({ locale: 'en' })
     .skip(offset)

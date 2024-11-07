@@ -15,11 +15,7 @@ import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const EditItemOrderForm = ({
-  selectedItem,
-  setCart,
-  productItems,
-}: {
+interface IEditItemOrderForm {
   selectedItem: { skuId: string; quantity: number; price: number };
   setCart: React.Dispatch<
     React.SetStateAction<
@@ -32,7 +28,13 @@ const EditItemOrderForm = ({
     >
   >;
   productItems: { name: string; code: string; price: number; image: string }[];
-}) => {
+}
+
+const EditItemOrderForm = ({
+  selectedItem,
+  setCart,
+  productItems,
+}: IEditItemOrderForm) => {
   const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState(selectedItem.quantity);
 

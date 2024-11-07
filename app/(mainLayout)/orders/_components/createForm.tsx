@@ -40,10 +40,7 @@ import AddItemOrderForm from './addItemOrderForm';
 import EditItemOrderForm from './editItemOrderForm';
 import { statusOptions } from './util';
 
-const CreatePurchaseOrderForm = ({
-  productItems,
-  customerItems,
-}: {
+interface ICreatePurchaseOrderForm {
   productItems: {
     _id: string;
     name: string;
@@ -52,7 +49,12 @@ const CreatePurchaseOrderForm = ({
     image: string;
   }[];
   customerItems: { label: string; value: string }[];
-}) => {
+}
+
+const CreatePurchaseOrderForm = ({
+  productItems,
+  customerItems,
+}: ICreatePurchaseOrderForm) => {
   const [loading, setLoading] = useState(false);
   const [cart, setCart] = useState<
     {

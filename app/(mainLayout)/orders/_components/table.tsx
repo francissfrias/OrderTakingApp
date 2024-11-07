@@ -1,18 +1,20 @@
 import { TableComponent } from '@/components/common/tableComponent';
-import { ColumnDef } from '@tanstack/react-table';
-import { PurchaseOrder as PurchaseOrderColumn } from './columns';
 import { mappedDataTable } from '@/lib/helper';
 import { PurchaseOrder } from '@/lib/model/PurchaseOrder';
+import { ColumnDef } from '@tanstack/react-table';
+import { PurchaseOrder as PurchaseOrderColumn } from './columns';
+
+interface IPurchaseOrderTable {
+  columns: ColumnDef<PurchaseOrderColumn>[];
+  offset: number;
+  pageSize: number;
+}
 
 const PurchaseOrderTable = async ({
   columns,
   offset,
   pageSize,
-}: {
-  columns: ColumnDef<PurchaseOrderColumn>[];
-  offset: number;
-  pageSize: number;
-}) => {
+}: IPurchaseOrderTable) => {
   const purchaseOrder = await PurchaseOrder.find({})
     .collation({ locale: 'en' })
     .skip(offset)

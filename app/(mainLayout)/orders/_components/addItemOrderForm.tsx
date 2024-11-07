@@ -13,11 +13,7 @@ import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 
-const AddItemOrderForm = ({
-  cart,
-  setCart,
-  productItems,
-}: {
+interface IAddItemOrderForm {
   cart: { skuId: string; quantity: number; price: number; subTotal: number }[];
   setCart: React.Dispatch<
     React.SetStateAction<
@@ -30,7 +26,13 @@ const AddItemOrderForm = ({
     >
   >;
   productItems: { name: string; code: string; price: number; image: string }[];
-}) => {
+}
+
+const AddItemOrderForm = ({
+  cart,
+  setCart,
+  productItems,
+}: IAddItemOrderForm) => {
   const [open, setOpen] = useState(false);
 
   const isProductInCart = (skuId: string) => {
