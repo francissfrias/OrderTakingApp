@@ -59,12 +59,15 @@ const PATCH = async (
     console.log(formData);
     const body = Object.fromEntries(formData.entries());
 
-    console.log(body);
+    console.log(body.isActive);
 
     const modifiedBody = {
       ...body,
       imageUrl: JSON.parse(body.imageUrl as string),
-      isActive: body.isActive === 'true' ? true : false,
+      isActive:
+        JSON.parse(body.isActive as string).toLowerCase() === 'true'
+          ? true
+          : false,
     };
     console.log(modifiedBody);
 
@@ -115,7 +118,10 @@ const PATCH = async (
     let blob;
     let modifiedData;
 
-    if (results.imageUrl[0].url !== validateSku?.imageUrl[0].url) {
+    if (
+      validateSku.imageUrl &&
+      results.imageUrl[0].url !== validateSku.imageUrl[0].url
+    ) {
       blob = await put(filename, file, {
         access: 'public',
       });
@@ -136,7 +142,10 @@ const PATCH = async (
       await del(results.imageUrl[0].url);
     }
 
-    if (results.imageUrl[0].url === validateSku?.imageUrl[0].url) {
+    if (
+      validateSku.imageUrl &&
+      results.imageUrl[0].url === validateSku.imageUrl[0].url
+    ) {
       modifiedData = {
         ...validateSku,
         imageUrl: results.imageUrl,
@@ -150,7 +159,7 @@ const PATCH = async (
       modifiedData
     );
 
-    revalidatePath('/');
+    revalidatePath('/sku');
 
     return NextResponse.json(result, { status: 201 });
   } catch (error) {

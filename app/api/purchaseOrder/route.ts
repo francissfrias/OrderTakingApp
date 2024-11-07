@@ -10,7 +10,6 @@ const POST = async (req: NextRequest) => {
 
     const result = await PurchaseOrder.create({
       ...body,
-      customerName: 'John Doe',
       dateCreated: Date.now(),
       timestamp: Date.now(),
       isActive: true,
@@ -27,7 +26,7 @@ const POST = async (req: NextRequest) => {
 
     await PurchaseItem.insertMany(purchaseItems);
 
-    revalidatePath('/');
+    revalidatePath('/orders');
 
     return NextResponse.json(result, { status: 201 });
   } catch (error) {

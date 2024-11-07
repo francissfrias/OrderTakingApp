@@ -60,6 +60,7 @@ const UpdateSkuForm = ({ id }: { id: string }) => {
 
   const onSubmit = async (data: UpdateSkuSchema) => {
     setLoading(true);
+    console.log(data);
     try {
       const formData = new FormData();
       const imageData = data.imageUrl

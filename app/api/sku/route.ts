@@ -1,9 +1,9 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { ZodError } from 'zod';
-import { createSku } from '@/schema/sku';
 import { Sku } from '@/lib/model/Sku';
+import { createSku } from '@/schema/sku';
 import { put } from '@vercel/blob';
+import { revalidatePath } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
+import { ZodError } from 'zod';
 
 const POST = async (req: NextRequest) => {
   try {
@@ -83,7 +83,7 @@ const POST = async (req: NextRequest) => {
       isActive: true,
     });
 
-    revalidatePath('/');
+    revalidatePath('/sku');
 
     return NextResponse.json(result, { status: 201 });
   } catch (error) {
