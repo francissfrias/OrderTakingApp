@@ -1,8 +1,12 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -11,20 +15,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
+import { ImageUploader } from '@/components/ui/imageupload';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
+import { createSku, CreateSkuSchema, skuDefaultValues } from '@/schema/sku';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { DialogTrigger } from '@radix-ui/react-dialog';
 import { Loader2, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import { DialogTrigger } from '@radix-ui/react-dialog';
-import { createSku, CreateSkuSchema, skuDefaultValues } from '@/schema/sku';
-import { ImageUploader } from '@/components/ui/imageupload';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 const CreateSkuForm = () => {
   const [open, setOpen] = useState(false);
@@ -74,6 +74,7 @@ const CreateSkuForm = () => {
         description: 'SKU Created Successfully',
       });
       setOpen(false);
+      form.reset();
     } catch (e) {
       console.log(e);
       toast({

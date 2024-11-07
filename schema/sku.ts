@@ -66,7 +66,6 @@ export const updateSku = createSku.partial().omit({
   dateCreated: true,
   createdBy: true,
   timestamp: true,
-  isActive: true,
   userId: true,
 });
 

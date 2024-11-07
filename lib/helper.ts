@@ -8,8 +8,6 @@ export const getPathname = ({ str, name }: { str: string; name?: string }) => {
   const string = decodeURI(str);
   const pathParts = string.split('/').filter(Boolean); // Remove empty parts from split
 
-  console.log(pathParts);
-
   if (pathParts.length > 2) {
     const lastPart = pathParts.pop(); // Remove and get the last part of the path
     const dynamicPart = pathParts.pop(); // Remove and get the second last part of the path
@@ -42,7 +40,6 @@ export const getPathnameBreadcrumbs = (str: string) => {
   const string = decodeURI(str);
   const split = string.split('/');
 
-  console.log(split);
   if (!split[1]) {
     return { title: 'Customer Page' };
   }

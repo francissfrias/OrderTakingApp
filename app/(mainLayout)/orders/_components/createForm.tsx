@@ -1,8 +1,8 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { Autocomplete } from '@/components/ui/autocomplete';
+import { Button } from '@/components/ui/button';
+import { DatePickerSingle } from '@/components/ui/datepickersingle';
 import {
   Form,
   FormControl,
@@ -11,16 +11,6 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Button } from '@/components/ui/button';
-import { Loader2 } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useToast } from '@/hooks/use-toast';
-import {
-  createPurchaseOrder,
-  CreatePurchaseOrderSchema,
-  purchaseOrderDefaultValues,
-} from '@/schema/purchaseOrder';
-import { DatePickerSingle } from '@/components/ui/datepickersingle';
 import {
   Select,
   SelectContent,
@@ -28,7 +18,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { statusOptions } from './util';
 import {
   Table,
   TableBody,
@@ -36,9 +25,20 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { useToast } from '@/hooks/use-toast';
+import {
+  createPurchaseOrder,
+  CreatePurchaseOrderSchema,
+  purchaseOrderDefaultValues,
+} from '@/schema/purchaseOrder';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2 } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import AddItemOrderForm from './addItemOrderForm';
 import EditItemOrderForm from './editItemOrderForm';
-import { Autocomplete } from '@/components/ui/autocomplete';
+import { statusOptions } from './util';
 
 const CreatePurchaseOrderForm = ({
   productItems,
@@ -59,6 +59,7 @@ const CreatePurchaseOrderForm = ({
       skuId: string;
       quantity: number;
       price: number;
+      subTotal: number;
     }[]
   >([]);
   const router = useRouter();
@@ -72,13 +73,17 @@ const CreatePurchaseOrderForm = ({
   const onSubmit = async (data: CreatePurchaseOrderSchema) => {
     setLoading(true);
     try {
+      const customer = customerItems.find(
+        (item) => item.value === data.customerId
+      );
       const dataToSend = {
         ...data,
-        amountDue: cart.reduce((acc, item) => acc + item.price, 0),
+        customerName: customer ? customer.label : '',
+        amountDue: cart.reduce((acc, item) => acc + (item.subTotal || 0), 0),
         cartOrders: cart,
       };
 
-      const response = await fetch('/api/customer', {
+      const response = await fetch('/api/purchaseOrder', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -93,10 +98,12 @@ const CreatePurchaseOrderForm = ({
       }
 
       await router.refresh();
+      await router.push('/orders');
       toast({
         title: 'Success',
         description: 'Customer Created Successfully',
       });
+      form.reset();
     } catch (e) {
       console.log(e);
       toast({
@@ -196,7 +203,7 @@ const CreatePurchaseOrderForm = ({
               <TableRow key={item.skuId}>
                 <TableHead>{item.skuId}</TableHead>
                 <TableHead>{item.quantity}</TableHead>
-                <TableHead>PHP {item.price}</TableHead>
+                <TableHead>PHP {item.price * item.quantity}</TableHead>
                 <TableHead className='p-2 w-20'>
                   <EditItemOrderForm
                     productItems={productItems}
@@ -213,7 +220,10 @@ const CreatePurchaseOrderForm = ({
                 {cart.reduce((acc, item) => acc + item.quantity, 0)}
               </TableHead>
               <TableHead>
-                PHP {cart.reduce((acc, item) => acc + item.price, 0)}
+                PHP{' '}
+                {cart
+                  .reduce((acc, item) => acc + (item.subTotal || 0), 0)
+                  .toFixed(2)}
               </TableHead>
             </TableRow>
           </TableBody>

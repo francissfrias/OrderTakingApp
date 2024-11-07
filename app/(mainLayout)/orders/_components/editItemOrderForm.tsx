@@ -1,19 +1,19 @@
 'use client';
 
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { DialogTrigger } from '@radix-ui/react-dialog';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
-import Image from 'next/image';
-import fallbackImage from '@/public/fallbackimage.webp';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
+import fallbackImage from '@/public/fallbackimage.webp';
+import { DialogTrigger } from '@radix-ui/react-dialog';
+import { X } from 'lucide-react';
+import Image from 'next/image';
+import { useState } from 'react';
 
 const EditItemOrderForm = ({
   selectedItem,
@@ -27,6 +27,7 @@ const EditItemOrderForm = ({
         skuId: string;
         quantity: number;
         price: number;
+        subTotal: number;
       }[]
     >
   >;
@@ -53,7 +54,7 @@ const EditItemOrderForm = ({
           ? {
               ...item,
               quantity,
-              price: quantity * (findProductItem?.price ?? 0),
+              subTotal: quantity * (findProductItem?.price ?? 0),
             }
           : item
       )

@@ -12,7 +12,7 @@ export const createPurchaseOrder = z
       .refine(
         (date) => {
           const today = new Date();
-          const tomorrow = new Date(today.setDate(today.getDate() + 1));
+          const tomorrow = new Date(today.setDate(today.getDate()));
           return date >= tomorrow;
         },
         {

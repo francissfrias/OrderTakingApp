@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
 import { Customer } from '@/lib/model/Customer';
-import { ZodError } from 'zod';
 import { ObjectId } from 'mongodb';
+import { revalidatePath } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
+import { ZodError } from 'zod';
 
 const GET = async (
   req: NextRequest,
@@ -35,8 +35,6 @@ const PATCH = async (
   try {
     const { id } = params;
 
-    console.log(id);
-
     const results = await Customer.findOne(
       { _id: new ObjectId(id) },
       {
@@ -59,8 +57,6 @@ const PATCH = async (
       mobileNumber: results.mobileNumber,
       _id: { $ne: new ObjectId(id) },
     });
-
-    console.log(existingMobileNumberCustomer);
 
     const existingNameCustomer = await Customer.findOne({
       firstName: results.firstName,
@@ -113,7 +109,5 @@ const PATCH = async (
     );
   }
 };
-
-
 
 export { GET, PATCH };

@@ -1,10 +1,10 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { ZodError } from 'zod';
-import { ObjectId } from 'mongodb';
 import { Sku } from '@/lib/model/Sku';
 import { updateSku } from '@/schema/sku';
-import { put } from '@vercel/blob';
+import { del, put } from '@vercel/blob';
+import { ObjectId } from 'mongodb';
+import { revalidatePath } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
+import { ZodError } from 'zod';
 
 const GET = async (
   req: NextRequest,
@@ -19,8 +19,6 @@ const GET = async (
       ...results,
       unitPrice: results?.unitPrice.toString(),
     };
-
-    console.log(modifiedResults);
 
     if (!results)
       return NextResponse.json(
@@ -47,7 +45,7 @@ const PATCH = async (
 
     const results = await Sku.findOne(
       { _id: new ObjectId(id) },
-      { _id: 0, name: 1, code: 1 }
+      { _id: 0, name: 1, code: 1, imageUrl: 1, isActive: 1 }
     ).exec();
 
     if (!results)
@@ -58,12 +56,17 @@ const PATCH = async (
 
     const formData = await req.formData();
 
+    console.log(formData);
     const body = Object.fromEntries(formData.entries());
+
+    console.log(body);
 
     const modifiedBody = {
       ...body,
       imageUrl: JSON.parse(body.imageUrl as string),
+      isActive: body.isActive === 'true' ? true : false,
     };
+    console.log(modifiedBody);
 
     const validateSku = updateSku.parse(modifiedBody);
 
@@ -109,23 +112,37 @@ const PATCH = async (
       );
     }
 
-    const blob = await put(filename, file, {
-      access: 'public',
-    });
+    let blob;
+    let modifiedData;
 
-    const modifiedData = {
-      ...validateSku,
-      imageUrl: [
-        {
-          url: blob.url,
-          name: validateSku.imageUrl?.[0]?.name ?? '',
-          lastModified: validateSku.imageUrl?.[0]?.lastModified ?? '',
-          lastModifiedDate: validateSku.imageUrl?.[0]?.lastModifiedDate ?? '',
-          size: validateSku?.imageUrl?.[0]?.size ?? '',
-          type: validateSku?.imageUrl?.[0]?.type ?? '',
-        },
-      ],
-    };
+    if (results.imageUrl[0].url !== validateSku?.imageUrl[0].url) {
+      blob = await put(filename, file, {
+        access: 'public',
+      });
+      modifiedData = {
+        ...validateSku,
+        imageUrl: [
+          {
+            url: blob.url,
+            name: validateSku.imageUrl?.[0]?.name ?? '',
+            lastModified: validateSku.imageUrl?.[0]?.lastModified ?? '',
+            lastModifiedDate: validateSku.imageUrl?.[0]?.lastModifiedDate ?? '',
+            size: validateSku?.imageUrl?.[0]?.size ?? '',
+            type: validateSku?.imageUrl?.[0]?.type ?? '',
+          },
+        ],
+      };
+
+      await del(results.imageUrl[0].url);
+    }
+
+    if (results.imageUrl[0].url === validateSku?.imageUrl[0].url) {
+      modifiedData = {
+        ...validateSku,
+        imageUrl: results.imageUrl,
+      };
+    }
+
     const result = await Sku.updateOne(
       {
         _id: new ObjectId(id),

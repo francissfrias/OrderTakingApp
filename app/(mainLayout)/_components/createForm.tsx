@@ -1,8 +1,12 @@
 'use client';
 
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogTitle,
+} from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -13,22 +17,18 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Loader2, X } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import {
-  customerDefaultValues,
-  createCustomer,
-  CreateCustomerSchema,
-} from '@/schema/customer';
 import { useToast } from '@/hooks/use-toast';
 import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogTitle,
-} from '@/components/ui/dialog';
+  createCustomer,
+  CreateCustomerSchema,
+  customerDefaultValues,
+} from '@/schema/customer';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { DialogTrigger } from '@radix-ui/react-dialog';
+import { Loader2, X } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 
 const CreateCustomerForm = () => {
   const [open, setOpen] = useState(false);
@@ -42,7 +42,6 @@ const CreateCustomerForm = () => {
   const { toast } = useToast();
 
   const onSubmit = async (data: CreateCustomerSchema) => {
-    console.log(data);
     setLoading(true);
     try {
       const response = await fetch('/api/customer', {
@@ -65,6 +64,7 @@ const CreateCustomerForm = () => {
         description: 'Customer Created Successfully',
       });
       setOpen(false);
+      form.reset();
     } catch (e) {
       console.log(e);
       toast({

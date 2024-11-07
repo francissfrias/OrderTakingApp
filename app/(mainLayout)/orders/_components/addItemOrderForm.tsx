@@ -1,30 +1,31 @@
 'use client';
 
-import { useState } from 'react';
+import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogClose,
   DialogContent,
   DialogTitle,
 } from '@/components/ui/dialog';
+import fallbackImage from '@/public/fallbackimage.webp';
 import { DialogTrigger } from '@radix-ui/react-dialog';
-import { Button } from '@/components/ui/button';
 import { X } from 'lucide-react';
 import Image from 'next/image';
-import fallbackImage from '@/public/fallbackimage.webp';
+import { useState } from 'react';
 
 const AddItemOrderForm = ({
   cart,
   setCart,
   productItems,
 }: {
-  cart: { skuId: string; quantity: number; price: number }[];
+  cart: { skuId: string; quantity: number; price: number; subTotal: number }[];
   setCart: React.Dispatch<
     React.SetStateAction<
       {
         skuId: string;
         quantity: number;
         price: number;
+        subTotal: number;
       }[]
     >
   >;
@@ -52,7 +53,12 @@ const AddItemOrderForm = ({
         // If the item is not in the cart, add it
         return [
           ...prevCart,
-          { skuId: item.code, quantity: 1, price: item.price },
+          {
+            skuId: item.code,
+            quantity: 1,
+            price: item.price,
+            subTotal: item.price,
+          },
         ];
       }
     });

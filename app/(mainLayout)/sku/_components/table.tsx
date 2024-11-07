@@ -1,8 +1,8 @@
 import { TableComponent } from '@/components/common/tableComponent';
-import { ColumnDef } from '@tanstack/react-table';
-import { Sku as SkuColumn } from './columns';
 import { mappedDataTable } from '@/lib/helper';
 import { Sku } from '@/lib/model/Sku';
+import { ColumnDef } from '@tanstack/react-table';
+import { Sku as SkuColumn } from './columns';
 
 const SkuTable = async ({
   columns,
@@ -13,9 +13,7 @@ const SkuTable = async ({
   offset: number;
   pageSize: number;
 }) => {
-  const sku = await Sku.find({
-    isActive: true,
-  })
+  const sku = await Sku.find({})
     .collation({ locale: 'en' })
     .skip(offset)
     .limit(pageSize)

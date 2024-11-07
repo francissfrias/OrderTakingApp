@@ -1,25 +1,16 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { revalidatePath } from 'next/cache';
-import { ZodError } from 'zod';
-import { createPurchaseOrder } from '@/schema/purchaseOrder';
-import { PurchaseOrder } from '@/lib/model/PurchaseOrder';
 import { PurchaseItem } from '@/lib/model/PurchaseItem';
+import { PurchaseOrder } from '@/lib/model/PurchaseOrder';
+import { revalidatePath } from 'next/cache';
+import { NextRequest, NextResponse } from 'next/server';
+import { ZodError } from 'zod';
 
 const POST = async (req: NextRequest) => {
   try {
     const body = await req.json();
 
-    const validatePurchaseOrder = createPurchaseOrder.parse(body);
-
-    if (!validatePurchaseOrder) {
-      return NextResponse.json(
-        { error: 'Invalid Purchase Order' },
-        { status: 400 }
-      );
-    }
-
     const result = await PurchaseOrder.create({
-      ...validatePurchaseOrder,
+      ...body,
+      customerName: 'John Doe',
       dateCreated: Date.now(),
       timestamp: Date.now(),
       isActive: true,
