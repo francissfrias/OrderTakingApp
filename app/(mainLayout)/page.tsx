@@ -1,9 +1,9 @@
+import TablePagination from '@/components/common/tablePagination';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import TablePagination from '@/components/common/tablePagination';
-import CustomersTable from './_components/table';
-import customerColumn from '@/app/(layout)/_components/columns';
+import customerColumn from './_components/columns';
 import CreateCustomerForm from './_components/createForm';
+import CustomersTable from './_components/table';
 
 export const metadata: Metadata = {
   title: 'Customer Page',
