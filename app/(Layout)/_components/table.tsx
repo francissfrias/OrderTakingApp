@@ -13,9 +13,7 @@ const CustomersTable = async ({
   offset: number;
   pageSize: number;
 }) => {
-  const customer = await Customer.find({
-    isActive: true,
-  })
+  const customer = await Customer.find({})
     .collation({ locale: 'en' })
     .skip(offset)
     .limit(pageSize)

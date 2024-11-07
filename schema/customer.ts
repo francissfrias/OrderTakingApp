@@ -28,7 +28,6 @@ export const updateCustomer = createCustomer.partial().omit({
   dateCreated: true,
   createdBy: true,
   timestamp: true,
-  isActive: true,
   userId: true,
 });
 

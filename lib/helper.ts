@@ -82,3 +82,8 @@ export const mappedDataTable = (arrayData: any) =>
     ...rest,
     _id: _id.toString(),
   }));
+
+export const booleanOptions = [
+  { label: 'Yes', value: true },
+  { label: 'No', value: false },
+];

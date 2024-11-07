@@ -30,6 +30,14 @@ import {
 } from '@/components/ui/dialog';
 import { DialogTrigger } from '@radix-ui/react-dialog';
 import { useGetId } from '@/hooks/useGetId';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { booleanOptions } from '@/lib/helper';
 
 const UpdateCustomerForm = ({ id }: { id: string }) => {
   const customer = useGetId({ id: id, module: 'customer' });
@@ -173,7 +181,41 @@ const UpdateCustomerForm = ({ id }: { id: string }) => {
                 </FormItem>
               )}
             />
-
+            <FormField
+              control={form.control}
+              name='isActive'
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Active Status</FormLabel>
+                  <Select
+                    onValueChange={(value) => field.onChange(value === 'true')}
+                    value={field.value?.toString() || ''}
+                    defaultValue={field.value?.toString() || ''}
+                  >
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue
+                          placeholder='Select if you accept online'
+                          onBlur={field.onBlur}
+                          ref={field.ref}
+                        />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {booleanOptions.map((item) => (
+                        <SelectItem
+                          key={item.value.toString()}
+                          value={item.value.toString()}
+                        >
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
             <Button
               className={'md:max-w-min'}
               disabled={loading}
