@@ -1,16 +1,5 @@
 'use client';
 
-import Link from 'next/link';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Button } from '@/components/ui/button';
-import { MenuIcon } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { getPathnameBreadcrumbs } from '@/lib/helper';
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -19,8 +8,19 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from '@/components/ui/breadcrumb';
-import LoadingDots from '../ui/loaderdot';
+import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { getPathnameBreadcrumbs } from '@/lib/helper';
 import { MenuItem } from '@/lib/menu-items';
+import { cn } from '@/lib/utils';
+import { MenuIcon } from 'lucide-react';
+import Link from 'next/link';
+import LoadingDots from '../ui/loaderdot';
 
 interface IHeader {
   menuItems: MenuItem[];
@@ -55,6 +55,7 @@ export default function Header({
             {menuItems.map((item) => {
               return (
                 <Link
+                  prefetch={true}
                   key={item.key}
                   href={item.key === '/' ? '/' : `/${item.key}`}
                 >

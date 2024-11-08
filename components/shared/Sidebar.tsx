@@ -1,8 +1,8 @@
 'use client';
 
-import Link from 'next/link';
-import { cn } from '@/lib/utils';
 import { MenuItem } from '@/lib/menu-items';
+import { cn } from '@/lib/utils';
+import Link from 'next/link';
 
 interface ISiderbar {
   children: React.ReactNode;
@@ -24,6 +24,7 @@ export default function Sidebar({
               {menuItems.map((item) => {
                 return (
                   <Link
+                    prefetch={true}
                     key={item.key}
                     href={item.key === '/' ? '/' : `/${item.key}`}
                     className={cn(
