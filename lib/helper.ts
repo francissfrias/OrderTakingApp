@@ -39,33 +39,16 @@ export const getPathnameBreadcrumbs = (str: string) => {
 
   const string = decodeURI(str);
   const split = string.split('/');
-
+  console.log('split', split);
   if (!split[1]) {
     return { title: 'Customer Page' };
   }
 
-  if (split[1].startsWith('create')) {
-    let title;
-    if (split[0].length === 0) {
-      title = 'Customer';
-    } else {
-      title = `${capitalize(split[1])} Page`;
-    }
+  if (split[2] && split[2].startsWith('create')) {
+    const title = `${capitalize(split[1])} Page`;
 
-    const section = `Create ${capitalize(split[1].slice(6))} Page`;
+    const section = `Create ${capitalize(split[2].slice(6))} Page`;
 
-    return { section, title };
-  }
-
-  if (split[1].startsWith('update')) {
-    let title;
-    if (split[0].length === 0) {
-      title = 'Customer';
-    } else {
-      title = `${capitalize(split[1])} Page`;
-    }
-
-    const section = `Update ${capitalize(split[1].slice(6))} Page`;
     return { section, title };
   }
 

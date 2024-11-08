@@ -1,4 +1,8 @@
+import { FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
+import FallbackImage from '@/public/fallbackimage.webp';
+import Image from 'next/image';
 import {
   forwardRef,
   useEffect,
@@ -6,12 +10,8 @@ import {
   useRef,
   useState,
 } from 'react';
-import Image from 'next/image';
 import { useController } from 'react-hook-form';
 import { v4 as uuidV4 } from 'uuid';
-import { FormLabel, FormMessage } from '@/components/ui/form';
-import { cn } from '@/lib/utils';
-import FallbackImage from '@/public/fallbackimage.webp';
 
 function extractFileName(filePath: string) {
   if (!filePath) return;
@@ -123,19 +123,21 @@ const ImageUploader = forwardRef<Ref, Props>(
         <div className='container flex flex-row w-full   items-center justify-center gap-6'>
           {!imageFile && value ? (
             <>
-              <Image
-                src={fallbackImage || value[0]?.url}
-                alt='upload your image'
-                width={125}
-                height={125}
-                quality={100}
-                onError={() => setFallbackImage(fallbackImage)}
-                layout='fixed'
-                className={cn(
-                  'rounded-full object-cover ring-1 ring-gray-200 max-h-[125px] max-w-[125px] aspect-1',
-                  readOnly && 'ring-2 ring-yellow-200'
-                )}
-              />
+              {value[0]?.url && (
+                <Image
+                  src={value[0].url}
+                  alt='upload your image'
+                  width={125}
+                  height={125}
+                  quality={100}
+                  onError={() => setFallbackImage(fallbackImage)}
+                  layout='fixed'
+                  className={cn(
+                    'rounded-full object-cover ring-1 ring-gray-200 max-h-[125px] max-w-[125px] aspect-1',
+                    readOnly && 'ring-2 ring-yellow-200'
+                  )}
+                />
+              )}
               <button
                 type='button'
                 onClick={handleDivClick}
@@ -146,7 +148,7 @@ const ImageUploader = forwardRef<Ref, Props>(
                 )}
               >
                 <p>{value[0]?.name}</p>
-                <p className='ml-2 font-semibold'>- Click to Update Photo</p>
+                <p className='ml-2 font-semibold'>Click to Update Photo</p>
               </button>
             </>
           ) : (
@@ -158,7 +160,9 @@ const ImageUploader = forwardRef<Ref, Props>(
                 height={125}
                 quality={100}
                 layout='fixed'
-                className='rounded-full object-cover ring-1 ring-gray-200 max-h-[125px] max-w-[125px] aspect-1'
+                className={cn(
+                  'rounded-full object-cover ring-1 ring-gray-200 max-h-[125px] max-w-[125px] aspect-1'
+                )}
               />
               <button
                 type='button'

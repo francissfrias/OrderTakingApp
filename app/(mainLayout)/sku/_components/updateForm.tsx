@@ -126,7 +126,9 @@ const UpdateSkuForm = ({ id }: { id: string }) => {
         </Button>
       </DialogTrigger>
       <DialogContent>
-        <DialogTitle>Create SKU</DialogTitle>
+        <DialogTitle>
+          Update {skuData?.name} - ${skuData?.code}
+        </DialogTitle>
         <DialogClose
           className='absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground'
           onClick={() => setOpen(false)}

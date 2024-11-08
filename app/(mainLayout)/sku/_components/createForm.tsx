@@ -91,7 +91,13 @@ const CreateSkuForm = () => {
   return (
     <Dialog open={open}>
       <DialogTrigger asChild>
-        <Button variant='outline' onClick={() => setOpen(true)}>
+        <Button
+          variant='outline'
+          onClick={() => {
+            setOpen(true);
+            form.reset();
+          }}
+        >
           Create SKU
         </Button>
       </DialogTrigger>
